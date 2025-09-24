@@ -39,12 +39,10 @@ def check_for_updates(
     deviceLibraryIdentifier: str = Path(...),
     passTypeIdentifier: str = Path(...),
     passesUpdatedSince: Optional[str] = Query(None),
-    authorization: Optional[str] = Header(None)
+    authorization: Optional[str] = Header(None),
 ):
     # Mock response
     return {
         "lastUpdated": datetime.utcnow().isoformat() + "Z",
-        "serialNumbers": [
-            "VT434311DEC22090"
-        ]
+        "serialNumbers": "VT434311DEC22090"
 }
