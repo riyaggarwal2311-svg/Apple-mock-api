@@ -45,5 +45,7 @@ def check_for_updates(
     # Mock response
     return {
         "lastUpdated": datetime.utcnow().isoformat() + "Z",
-        "serialNumbers": "VT434311DEC22090"
+        "serialNumbers": [
+         "VT434311DEC22090"
+        ]
 }
