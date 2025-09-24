@@ -1,6 +1,6 @@
 from typing import Union
-
-from fastapi import FastAPI, Path, Body
+from fastapi import FastAPI, Path, Body, Query, Header
+from typing import List, Optional
 
 app = FastAPI()
 
@@ -30,3 +30,21 @@ def register_device(
         "body": body,
         "status": "registered"
     }
+
+
+@app.get(
+    "/v1/devices/{deviceLibraryIdentifier}/registrations/{passTypeIdentifier}"
+)
+def check_for_updates(
+    deviceLibraryIdentifier: str = Path(...),
+    passTypeIdentifier: str = Path(...),
+    passesUpdatedSince: Optional[str] = Query(None),
+    authorization: Optional[str] = Header(None)
+):
+    # Mock response
+    return {
+        "lastUpdated": datetime.utcnow().isoformat() + "Z",
+        "serialNumbers": [
+            "VT434311DEC22090"
+        ]
+}
