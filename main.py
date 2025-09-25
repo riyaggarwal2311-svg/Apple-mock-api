@@ -1,7 +1,8 @@
 from typing import Union
-from fastapi import FastAPI, Path, Body, Query, Header
+from fastapi import FastAPI, Path, Body, Query, Header, HTTPException
 from typing import List, Optional
 from datetime import datetime
+from fastapi.responses import Response
 
 app = FastAPI()
 
@@ -49,4 +50,25 @@ def check_for_updates(
          "VT434311DEC22090"
         ]
 }
+
+@app.get("/v1/passes/{passTypeIdentifier}/{serialNumber}")
+async def get_pass(
+    passTypeIdentifier: str = Path(...),
+    serialNumber: str = Path(...),
+    authorization: Optional[str] = Header(None)
+):
+    pkpass_path = f"./passes/{serialNumber}.pkpass"
+    try:
+        with open(pkpass_path, "rb") as f:
+            pkpass_data = f.read()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error reading pass file")
+
+    return Response(
+        content=pkpass_data,
+        media_type="application/vnd.apple.pkpass",
+        headers={
+            "Content-Disposition": f"attachment; filename={serialNumber}.pkpass"
+        }
+    )
 
